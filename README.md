@@ -20,17 +20,124 @@ JCON Controller は、DIYハードウェアのためのワイヤレスコント�
   
 .zipとして導入可能なライブラリは後日整備予定
 
-## アプリの使い方
-* **基本画面**
+## アプリの説明 
 アプリには4つの基本画面があります。
-* 「操作」
-* 「接続」
-* 「ログ」
-* 「設定」 
+
+### **操作画面**
+  メインのコントローラー画面です。  
+  ボタン、ジョイスティック、スライダーなどを自分の好きなように配置することができます。JSONモニターを有効化すると、送信しているJSONをリアルタイムで確認することができます。  
+#### 操作画面の例
+
+<div>
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SOUSA_dual_joy.png" alt="SOUSA_dual_joy" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面の例1</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SOUSA_12button_dual_slider.png" alt="SOUSA_12button_dual_slider" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面の例2</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SOUSA_pad_joy.png" alt="SOUSA_pad_joy" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面の例3</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SOUSA_6button_Monitor.png" alt="SOUSA_6button_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面の例4</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SOUSA_dual_joy_Monitor.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面の例5</figcaption>
+  </figure>
+</div>
+
+### **接続画面**
+接続するBLEマイコンを選択する画面です。  
+プログラム内でデバイス名の先頭に「JCON-」をつけることでこの画面に出てきます。近くに複数の対応デバイスがある場合は、リストから接続したいデバイスを選択して接続します。  
+以下の画像では、近くにある「JCON-ESPESP」というデバイスが表示されています。
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETSUZOKU_scan.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">接続画面</figcaption>
+  </figure>
+
+### **ログ**
+ログが表示されます。
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETSUZOKU_scan.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">ログ画面の例</figcaption>
+  </figure>
+
+### 設定
+各種設定を行う画面です。  
+以下のような項目を設定できます。  
+- JSONモニタの表示/非表示
+- 色テーマ
+- BLE送信周期
+- 各スロットに割り当てる機能(ボタン、ジョイスティック、スライダー)  
+  
+各スロットのラベル名を編集することで、JSONのキー名に反映されます．また、ジョイスティックとスライダーはその最大値を設定することができます．
+
+<div>
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_MONITOR.png" alt="SOUSA_dual_joy" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">JSONモニタの表示/非表示</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_SYUUKI.png" alt="SOUSA_12button_dual_slider" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">色テーマ/BLE送信周期</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_BLUE.png" alt="SOUSA_pad_joy" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面(青)</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_GREEN.png" alt="SOUSA_6button_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面(緑)</figcaption>
+  </figure>
+
+  <figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_RED.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面(赤)</figcaption>
+  </figure>
+
+<figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_BLACK.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面(黒)</figcaption>
+  </figure>
+
+<figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_PURPLE.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面(紫)</figcaption>
+  </figure>
+
+<figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_PINK.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">操作画面(ピンク)</figcaption>
+  </figure>
+
+<figure style="display:inline-block;text-align:center;margin:6px;vertical-align:top;width:240px;">
+    <img src="images/SETTEI_slot.png" alt="SOUSA_dual_joy_Monitor" style="width:100%;height:auto;display:block;margin:0;">
+    <figcaption style="font-size:0.95rem;margin-top:8px;">スロット機能選択</figcaption>
+  </figure>
+</div>
+
+## 使い方
+1.設定画面で送信周期や各スロットの機能を設定  
+2.接続画面で接続するデバイスを選択  
+3.コントローラーを操作してデバイスに送信
 
 ## リンクとドキュメント
 
-| 項目 | URL | 備考 |
-| :--- | :--- | :--- |
-| **App Store (iOS)** | [App Storeのアプリリンク] | App Storeでアプリをダウンロード |
-| **プライバシーポリシー** | https://jani-onct.github.io/JCON-JSON_Controller/ | 本アプリのプライバシーポリシー |
+| 項目                     | URL                                               | 備考                            |
+| :----------------------- | :------------------------------------------------ | :------------------------------ |
+| **App Store (iOS)**      | [App Storeのアプリリンク]                         | App Storeでアプリをダウンロード |
+| **プライバシーポリシー** | https://jani-onct.github.io/JCON-JSON_Controller/ | 本アプリのプライバシーポリシー  |
