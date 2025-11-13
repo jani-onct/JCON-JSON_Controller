@@ -16,7 +16,7 @@ JCON Controller は、DIYハードウェアのためのワイヤレスコント�
 
 以下のリンクから、ESP32ボードで使用可能なファームウェアのサンプルコードをダウンロードできます。
  
-* **サンプルコード**:https://github.com/jani-onct/JCON-JSON_Controller/tree/main/sample
+* **サンプルコード(for ESP32)**:https://github.com/jani-onct/JCON-JSON_Controller/tree/main/sample
   
 .zipとして導入可能なライブラリは後日整備予定
 
