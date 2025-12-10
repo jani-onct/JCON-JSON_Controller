@@ -13,10 +13,10 @@ struct JConData
     int JCON_8;
     int JCON_D_Pad;
 
-    float JCON_Stick_L_x;
-    float JCON_Stick_L_y;
-    float JCON_Stick_R_x;
-    float JCON_Stick_R_y;
+    float JCON_L_X;
+    float JCON_L_Y;
+    float JCON_R_X;
+    float JCON_R_Y;
 
     float JCON_UL;
     float JCON_UR;
@@ -28,23 +28,23 @@ void parseJConData(StaticJsonDocument<JSON_DOC_SIZE> &doc, void *dataPtr)
 // void parseJConData(JsonDocument &doc, void *dataPtr)
 {
     JConData *data = static_cast<JConData *>(dataPtr);
-    data->JCON_1 = doc["1"].as<int>() | 0;
-    data->JCON_2 = doc["2"].as<int>() | 0;
-    data->JCON_3 = doc["3"].as<int>() | 0;
-    data->JCON_4 = doc["4"].as<int>() | 0;
-    data->JCON_5 = doc["5"].as<int>() | 0;
-    data->JCON_6 = doc["6"].as<int>() | 0;
-    data->JCON_7 = doc["7"].as<int>() | 0;
-    data->JCON_8 = doc["8"].as<int>() | 0;
-    data->JCON_D_Pad = doc["D-Pad"].as<int>() | 0;
+    data->JCON_1 = doc["buttons"]["1"].as<int>() | 0;
+    data->JCON_2 = doc["buttons"]["2"].as<int>() | 0;
+    data->JCON_3 = doc["buttons"]["3"].as<int>() | 0;
+    data->JCON_4 = doc["buttons"]["4"].as<int>() | 0;
+    data->JCON_5 = doc["buttons"]["5"].as<int>() | 0;
+    data->JCON_6 = doc["buttons"]["6"].as<int>() | 0;
+    data->JCON_7 = doc["buttons"]["7"].as<int>() | 0;
+    data->JCON_8 = doc["buttons"]["8"].as<int>() | 0;
+    data->JCON_D_Pad = doc["buttons"]["D-Pad"].as<int>() | 0;
 
-    data->JCON_Stick_L_x = doc["Stick_L"]["x"].as<float>();
-    data->JCON_Stick_L_y = doc["Stick_L"]["y"].as<float>();
-    data->JCON_Stick_R_x = doc["Stick_R"]["x"].as<float>();
-    data->JCON_Stick_R_y = doc["Stick_R"]["y"].as<float>();
+    data->JCON_L_X = doc["axes"]["L_X"].as<float>();
+    data->JCON_L_Y = doc["axes"]["L_Y"].as<float>();
+    data->JCON_R_X = doc["axes"]["R_X"].as<float>();
+    data->JCON_R_Y = doc["axes"]["R_Y"].as<float>();
 
-    data->JCON_UL = doc["UL"].as<float>();
-    data->JCON_UR = doc["UR"].as<float>();
+    data->JCON_UL = doc["axes"]["UL"].as<float>();
+    data->JCON_UR = doc["axes"]["UR"].as<float>();
 }
 
 const char *DEVICE_NAME = "JCON-PicoW";
@@ -63,12 +63,17 @@ void loop()
 {
     jconBle.loop();
 
-    static unsigned long lastSendTime = 0;
-    static int testCounter = 1;
-    const unsigned long SEND_INTERVAL = 200;
+    if (JCON_wasDisconnected)
+    {
+        Serial.println("!!! CONNECTION LOST !!! Performing necessary cleanup.");
+        JCON_wasDisconnected = false;
+    }
 
     if (jconBle.isConnected())
-    {
+    {   
+        static unsigned long lastSendTime = 0;
+        static int testCounter = 1;
+        const unsigned long SEND_INTERVAL = 200;
         unsigned long currentMillis = millis();
 
         if (currentMillis - lastSendTime >= SEND_INTERVAL)
@@ -105,8 +110,8 @@ void loop()
         Serial.printf("RX Data -> Btns:[%d%d%d%d%d%d%d%d], Stick_L:(%.2f,%.2f), Stick_R:(%.2f,%.2f), UL:%.2f, UR:%.2f\n",
                       controllerData.JCON_1, controllerData.JCON_2, controllerData.JCON_3, controllerData.JCON_4,
                       controllerData.JCON_5, controllerData.JCON_6, controllerData.JCON_7, controllerData.JCON_8,
-                      controllerData.JCON_Stick_L_x, controllerData.JCON_Stick_L_y,
-                      controllerData.JCON_Stick_R_x, controllerData.JCON_Stick_R_y,
+                      controllerData.JCON_L_X, controllerData.JCON_L_Y,
+                      controllerData.JCON_R_X, controllerData.JCON_R_Y,
                       controllerData.JCON_UL, controllerData.JCON_UR);
 
         JCON_newDataAvailable = false;

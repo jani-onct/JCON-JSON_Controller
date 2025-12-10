@@ -11,8 +11,8 @@ struct JConData { // 自分で設定したキー配置などに合わせて設�
     int JCON_8;
     int JCON_D_Pad;
 
-    float JCON_Stick_R_x; 
-    float JCON_Stick_R_y; 
+    float JCON_R_X; 
+    float JCON_R_Y; 
 
     float JCON_UL;
     float JCON_UR;
@@ -34,11 +34,11 @@ void parseJConData(StaticJsonDocument<JSON_DOC_SIZE>& doc, void* dataPtr) {
     data->JCON_8       = doc["8"] | 0;
     data->JCON_D_Pad   = doc["D-Pad"] | 0; 
 
-    data->JCON_Stick_R_x     = doc["Stick_R"]["x"] | 0.0f; 
-    data->JCON_Stick_R_y     = doc["Stick_R"]["y"] | 0.0f; 
+    data->JCON_R_X     = doc["axes"]["R_X"] | 0.0f; 
+    data->JCON_R_Y     = doc["axes"]["R_Y"] | 0.0f; 
     
-    data->JCON_UL      = doc["UL"] | 0.0f;
-    data->JCON_UR      = doc["UR"] | 0.0f;
+    data->JCON_UL      = doc["axes"]["UL"] | 0.0f;
+    data->JCON_UR      = doc["axes"]["UR"] | 0.0f;
 }
 
 const char* DEVICE_NAME = "JCON-ESP32"; 
@@ -57,7 +57,7 @@ void loop() {
 static float last_R_x = 0.0f; 
     
     if (jconBle.isConnected()) {
-        Serial.println(controllerData.JCON_Stick_R_x);
+        Serial.println(controllerData.JCON_R_X);
         delay(50); 
     } else {
         delay(1);
