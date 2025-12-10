@@ -20,11 +20,15 @@ struct JConData
     float JCON_UL;
     float JCON_UR;
 };
+
 JConData controllerData;
+
+volatile bool newDataAvailable = false;
 
 void parseJConData(StaticJsonDocument<JSON_DOC_SIZE> &doc, void *dataPtr)
 {
     JConData *data = static_cast<JConData *>(dataPtr);
+
     data->JCON_1 = doc["buttons"]["1"] | 0;
     data->JCON_2 = doc["buttons"]["2"] | 0;
     data->JCON_3 = doc["buttons"]["3"] | 0;
@@ -34,12 +38,16 @@ void parseJConData(StaticJsonDocument<JSON_DOC_SIZE> &doc, void *dataPtr)
     data->JCON_7 = doc["buttons"]["7"] | 0;
     data->JCON_8 = doc["buttons"]["8"] | 0;
     data->JCON_D_Pad = doc["buttons"]["D-Pad"] | 0;
+
     data->JCON_L_X = doc["axes"]["L_X"] | 0.0f;
     data->JCON_L_Y = doc["axes"]["L_Y"] | 0.0f;
     data->JCON_R_X = doc["axes"]["R_X"] | 0.0f;
     data->JCON_R_Y = doc["axes"]["R_Y"] | 0.0f;
+
     data->JCON_UL = doc["axes"]["UL"] | 0.0f;
     data->JCON_UR = doc["axes"]["UR"] | 0.0f;
+
+    newDataAvailable = true;
 }
 
 const char *DEVICE_NAME = "JCON-ESP32";
@@ -47,56 +55,24 @@ JConBLE jconBle;
 
 void setup()
 {
+    Serial.begin(115200); 
+
     jconBle.begin(DEVICE_NAME, &controllerData, parseJConData);
 }
 
-// 送信用変数
 unsigned long lastSendTime = 0;
+unsigned long lastLogTime = 0; // ログ間引き用
 int testCounter = 1;
-unsigned long lastDisplayTime = 0;
 
-// void loop() {
-
-//     if (jconBle.isConnected()) {
-
-//         unsigned long currentMillis = millis();
-//         if (currentMillis - lastSendTime >= 200) {
-//             lastSendTime = currentMillis;
-
-//             StaticJsonDocument<200> txDoc;
-//             txDoc["test"] = testCounter;
-
-//             String output;
-//             serializeJson(txDoc, output);
-
-//             jconBle.send(output);
-//             Serial.print("TX: ");
-//             Serial.println(output);
-
-//             testCounter++;
-//             if (testCounter > 10) {
-//                 testCounter = 1;
-//             }
-//         }
-
-//         delay(10);
-//     } else {
-//         delay(500);
-//     }
-// }
 void loop()
 {
-
     if (jconBle.isConnected())
     {
-
         unsigned long currentMillis = millis();
 
-        // 送信ロジック (TX) - 200msごと
         if (currentMillis - lastSendTime >= 1000)
         {
             lastSendTime = currentMillis;
-
             StaticJsonDocument<200> txDoc;
             txDoc["test"] = testCounter;
 
@@ -104,8 +80,9 @@ void loop()
             serializeJson(txDoc, output);
 
             jconBle.send(output);
-            Serial.print("TX: ");
-            Serial.println(output);
+            
+            // Serial.print("TX: ");
+            // Serial.println(output);
 
             testCounter++;
             if (testCounter > 10)
@@ -114,27 +91,25 @@ void loop()
             }
         }
 
-        // 受信データ表示ロジック (RX) - 500msごと
-        const unsigned long DISPLAY_INTERVAL = 50;
-        if (currentMillis - lastDisplayTime >= DISPLAY_INTERVAL)
+        if (newDataAvailable && (currentMillis - lastLogTime > 30)) 
         {
-            lastDisplayTime = currentMillis;
+            newDataAvailable = false;
+            lastLogTime = currentMillis;
 
-            // 受信した構造体の内容を出力
-            Serial.println("--- JCON Data Received ---");
-            // ボタン/D-Pad
-            Serial.printf("Btns: 1=%d, 2=%d, 3=%d, 4=%d, 5=%d, 6=%d, 7=%d, 8=%d, D-Pad=%d\n",
-                          controllerData.JCON_1, controllerData.JCON_2, controllerData.JCON_3, controllerData.JCON_4,
-                          controllerData.JCON_5, controllerData.JCON_6, controllerData.JCON_7, controllerData.JCON_8,
-                          controllerData.JCON_D_Pad);
-
-            // スティック/スライダー (JConDataの定義に合わせて表示)
-            Serial.printf("Stick_R: (%.2f, %.2f)\n", controllerData.JCON_R_X, controllerData.JCON_R_Y);
-            Serial.printf("UL: %.2f, UR: %.2f\n", controllerData.JCON_UL, controllerData.JCON_UR);
-            Serial.println("--------------------------");
+            Serial.printf("RX Data -> Btns:[%d%d%d%d%d%d%d%d], Stick_L:(%.2f,%.2f), Stick_R:(%.2f,%.2f), UL:%.2f, UR:%.2f\n",
+                controllerData.JCON_1, controllerData.JCON_2, controllerData.JCON_3, controllerData.JCON_4,
+                controllerData.JCON_5, controllerData.JCON_6, controllerData.JCON_7, controllerData.JCON_8,
+                controllerData.JCON_L_X, controllerData.JCON_L_Y,
+                controllerData.JCON_R_X, controllerData.JCON_R_Y,
+                controllerData.JCON_UL, controllerData.JCON_UR
+            );
+        }
+        else if (newDataAvailable) 
+        {
+             newDataAvailable = false; 
         }
 
-        delay(10);
+        delay(1);
     }
     else
     {

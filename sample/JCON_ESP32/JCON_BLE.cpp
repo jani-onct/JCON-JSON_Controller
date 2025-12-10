@@ -1,9 +1,18 @@
 #include "JCON_BLE.h"
 
-void ServerCallbacks::onConnect(BLEServer* pServer) {
+// void ServerCallbacks::onConnect(BLEServer* pServer) {
+//     if (_pInstance) {
+//         _pInstance->deviceConnected = true;
+//         Serial.println("[EVENT] Device connected.");
+//     }
+// }
+
+void ServerCallbacks::onConnect(BLEServer* pServer, esp_ble_gatts_cb_param_t *param) {
     if (_pInstance) {
         _pInstance->deviceConnected = true;
-        Serial.println("[EVENT] Device connected.");
+        pServer->updateConnParams(param->connect.remote_bda, 0x06, 0x0C, 0, 100);
+        
+        Serial.println("[EVENT] Device connected. Requested low latency.");
     }
 }
 
@@ -16,16 +25,17 @@ void ServerCallbacks::onDisconnect(BLEServer* pServer) {
 }
 
 void WriteCharacteristicCallbacks::onWrite(BLECharacteristic *pCharacteristic) {
-    String tempValue = pCharacteristic->getValue(); 
-    std::string rxValue = tempValue.c_str(); 
+    String rxValue = pCharacteristic->getValue(); 
 
     if (rxValue.length() > 0) {
         
-        Serial.print("RX: ");
-        Serial.println(rxValue.c_str());
+        // デバッグ用: 受信データ表示
+        // Serial.print("RX: ");
+        // Serial.println(rxValue);
 
         StaticJsonDocument<JSON_DOC_SIZE> doc;
-        DeserializationError error = deserializeJson(doc, rxValue.c_str());
+        
+        DeserializationError error = deserializeJson(doc, rxValue);
 
         if (error) {
             Serial.print(F("[ERROR] JSON parse failed: "));
@@ -57,6 +67,7 @@ void JConBLE::begin(const char* deviceName, void* dataPtr, ParseCallback parseCa
     // RX (書き込み用)
     pWriteCharacteristic = pService->createCharacteristic(
                                         WRITE_CHAR_UUID,
+                                        BLECharacteristic::PROPERTY_WRITE | 
                                         BLECharacteristic::PROPERTY_WRITE_NR
                                     );
     pWriteCallbacks = new WriteCharacteristicCallbacks(dataPtr, parseCallback);

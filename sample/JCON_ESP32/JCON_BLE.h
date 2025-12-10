@@ -22,10 +22,21 @@ using ParseCallback = std::function<void(StaticJsonDocument<JSON_DOC_SIZE>&, voi
 
 class JConBLE; 
 
+// class ServerCallbacks: public BLEServerCallbacks {
+// public:
+//     ServerCallbacks(JConBLE* pInstance) : _pInstance(pInstance) {}
+//     void onConnect(BLEServer* pServer) override;
+//     void onDisconnect(BLEServer* pServer) override;
+// private:
+//     JConBLE* _pInstance;
+// };
+
 class ServerCallbacks: public BLEServerCallbacks {
 public:
     ServerCallbacks(JConBLE* pInstance) : _pInstance(pInstance) {}
-    void onConnect(BLEServer* pServer) override;
+
+    void onConnect(BLEServer* pServer, esp_ble_gatts_cb_param_t *param) override;
+    
     void onDisconnect(BLEServer* pServer) override;
 private:
     JConBLE* _pInstance;
