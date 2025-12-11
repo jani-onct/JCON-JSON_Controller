@@ -1,3 +1,10 @@
+// JCONアプリとRaspberry Pi Pico Wで送信してDAMIAOモータを回すサンプルプログラムです．
+// 参考リンク：https://github.com/Suzu-Gears/DAMIAO_Control_Arduino
+// JconDataで定義したデータ構造体に受信データが格納されます．
+// データ構造体のメンバ名はの"JCON_"に続く部分はJCONアプリで設定したキーと一致させてください．
+// 1000ミリ秒ごとにテストデータをJCONアプリに送信します．
+// ボタン，D-Padの値はint型，スティック，スライダーの値はfloat型で受信されます．
+
 #include "JCON_BLE_PicoW.h"
 #include <SPI.h>
 

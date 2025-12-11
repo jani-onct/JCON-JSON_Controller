@@ -5,7 +5,6 @@
 #include <ArduinoJson.h>
 #include <functional>
 
-// UUID定義 (アプリとの通信用)
 #define SERVICE_UUID      "2f11534c-b252-f1a8-7544-ef1f01004faf"
 #define WRITE_CHAR_UUID   "2f11534c-b252-f1a8-7544-ef1f02004faf" 
 #define NOTIFY_CHAR_UUID  "2f11534c-b252-f1a8-7544-ef1f03004faf" 

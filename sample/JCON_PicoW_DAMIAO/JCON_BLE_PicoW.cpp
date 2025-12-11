@@ -149,7 +149,7 @@ int JConBLE_PicoW::gattWriteCallback(uint16_t value_handle, uint8_t *buffer, uin
         _parseCallback(doc, _dataPtr);
     }
 
-    // Raw JSON を表示する (A. のための表示)
+    // Raw JSON を表示する
     // Serial.print("RX (Raw JSON): "); Serial.println(temp_buffer);
 
     return 0;
