@@ -1,12 +1,5 @@
 #include "JCON_BLE.h"
 
-// void ServerCallbacks::onConnect(BLEServer* pServer) {
-//     if (_pInstance) {
-//         _pInstance->deviceConnected = true;
-//         Serial.println("[EVENT] Device connected.");
-//     }
-// }
-
 void ServerCallbacks::onConnect(BLEServer* pServer, esp_ble_gatts_cb_param_t *param) {
     if (_pInstance) {
         _pInstance->deviceConnected = true;

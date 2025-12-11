@@ -1,3 +1,9 @@
+// JCONアプリとESP32で送受信するためのサンプルプログラムです．
+// JconDataで定義したデータ構造体に受信データが格納されます．
+// データ構造体のメンバ名はの"JCON_"に続く部分はJCONアプリで設定したキーと一致させてください．
+// 1000ミリ秒ごとにテストデータをJCONアプリに送信します．
+// ボタン，D-Padの値はint型，スティック，スライダーの値はfloat型で受信されます．
+
 #include "JCON_BLE.h"
 
 struct JConData
@@ -61,7 +67,7 @@ void setup()
 }
 
 unsigned long lastSendTime = 0;
-unsigned long lastLogTime = 0; // ログ間引き用
+unsigned long lastLogTime = 0;
 int testCounter = 1;
 
 void loop()

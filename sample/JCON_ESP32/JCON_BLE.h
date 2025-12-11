@@ -9,27 +9,15 @@
 #include <functional> 
 #include <string>
 
-// UUID定義
 #define SERVICE_UUID        "2f11534c-b252-f1a8-7544-ef1f01004faf"
 #define WRITE_CHAR_UUID     "2f11534c-b252-f1a8-7544-ef1f02004faf"
 #define NOTIFY_CHAR_UUID    "2f11534c-b252-f1a8-7544-ef1f03004faf" 
 
-// JSONパース用の静的バッファサイズ
 const size_t JSON_DOC_SIZE = 1024; 
 
-// 外部定義のデータ構造へのパース処理を外部に渡すための型エイリアス
 using ParseCallback = std::function<void(StaticJsonDocument<JSON_DOC_SIZE>&, void*)>;
 
 class JConBLE; 
-
-// class ServerCallbacks: public BLEServerCallbacks {
-// public:
-//     ServerCallbacks(JConBLE* pInstance) : _pInstance(pInstance) {}
-//     void onConnect(BLEServer* pServer) override;
-//     void onDisconnect(BLEServer* pServer) override;
-// private:
-//     JConBLE* _pInstance;
-// };
 
 class ServerCallbacks: public BLEServerCallbacks {
 public:
