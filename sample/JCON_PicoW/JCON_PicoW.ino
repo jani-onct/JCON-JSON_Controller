@@ -1,3 +1,9 @@
+// JCONアプリとRaspberry Pi Pico Wで送受信するためのサンプルプログラムです．
+// JconDataで定義したデータ構造体に受信データが格納されます．
+// データ構造体のメンバ名はの"JCON_"に続く部分はJCONアプリで設定したキーと一致させてください．
+// 1000ミリ秒ごとにテストデータをJCONアプリに送信します．
+// ボタン，D-Padの値はint型，スティック，スライダーの値はfloat型で受信されます．
+
 #include "JCON_BLE_PicoW.h"
 #include <SPI.h>
 
@@ -25,7 +31,6 @@ struct JConData
 JConData controllerData;
 
 void parseJConData(StaticJsonDocument<JSON_DOC_SIZE> &doc, void *dataPtr)
-// void parseJConData(JsonDocument &doc, void *dataPtr)
 {
     JConData *data = static_cast<JConData *>(dataPtr);
     data->JCON_1 = doc["buttons"]["1"].as<int>() | 0;
